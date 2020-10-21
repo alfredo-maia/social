@@ -1,0 +1,4 @@
+<ignored>
+	<script type="text/javascript" src="html5/MovimentacoesHTML/abas/Log/Log.controller.js"></script>
+	<script type="text/javascript" src="html5/MovimentacoesHTML/abas/Testes/Testes.controller.js"></script>
+</ignored>

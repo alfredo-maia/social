@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listeners>
+	<listener entityName="Produto">br.com.sankhya.treina.listeners.ProdutoListener</listener>
+</listeners>
+
+

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<HttpServiceBroker
+	authenticator="br.com.sankhya.dwf.services.DefaultAuthenticator">
+	
+	<providers>
+		<provider domain="LancamentoFinancFreteSP"
+			class="br.com.sankhya.acompfrete.services.LancamentoFinancFreteSPBean"
+			type="ejb-stateless"
+			jndi="br/com/sankhya/acompfrete/services/LancamentoFinancFreteSP"
+			authentication="true" />
+			
+		<provider domain="LancamentoNotasFreteSP"
+			class="br.com.sankhya.acompfrete.services.LancamentoNotasFreteSPBean"
+			type="ejb-stateless"
+			jndi="br/com/sankhya/acompfrete/services/LancamentoNotasFreteSP"
+			authentication="true" />
+			
+	</providers>
+</HttpServiceBroker>

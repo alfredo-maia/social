@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE parameters>
+<parameters group-name="asm.treina" 
+data-source="br.com.sankhya.modelcore.util.MGECoreParameter">
+	
+	<!-- Types = integer number string boolean -->
+	
+	<parameter
+	    name="br.com.sankhya.treina.parametro.goonotamod"
+	    key="GOONOTAMOD"
+	    type="integer"
+	    cacheable="false"
+	    required="false"
+	    default="0"
+	    description="[TREINA]Nota modelo para lançamento de notas de gerenciamento de motoristas"
+	    module="E"
+	/>
+	
+	<parameter
+	    name="br.com.sankhya.treina.parametro.goofinancmod"
+	    key="GOOFINANCMOD"
+	    type="integer"
+	    cacheable="false"
+	    required="false"
+	    default="0"
+	    description="[TREINA]Financeiro modelo para lançamentos frete de motoristas"
+	    module="E"
+	/>
+</parameters>

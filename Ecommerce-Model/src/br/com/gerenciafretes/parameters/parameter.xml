@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE parameters>
+<parameters group-name="asm.gerenciafretes" 
+data-source="br.com.sankhya.modelcore.util.MGECoreParameter">
+	
+	<!-- Types = integer number string boolean -->
+	
+	<parameter
+		name = "br.com.sankhya.gerenciafretes.param.gervlrfrete"
+		key = "GERVLRFRETE"
+		type = "number"
+		cacheable = "false"
+		required = "false"
+		default = "25.00"
+		description = "[GERENCIAFRETE] Vlr frete para lançamento na tela de Gerenciamento"
+	    module = "E" />
+	
+	<parameter
+		name = "br.com.sankhya.gerenciafretes.param.gerfinmod"
+		key = "GERFINMOD"
+		type = "integer"
+		cacheable = "false"
+		required = "false"
+		default = "0"
+		description = "[GERENCIAFRETE] Financeiro modelo para lançamento na tela de Gerenciamento"
+	    module = "E" />
+	   
+</parameters>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<jape>
+	<parameters>
+	    <param name="connection.lifecycle.listener">br.com.sankhya.modelcore.dwfdata.ConnectionLifeCycleListenerImpl</param>
+	    <param name="session.lifecycle.listener">br.com.sankhya.modelcore.dwfdata.JapeSessionLifeCycleImpl</param>
+	    <param name="entity.config.provider.impl">br.com.sankhya.modelcore.dwfdata.EntityConfigurationProviderImpl</param>
+	    <!-- 
+	    parametro que determina o datasource para o qual sera aberta uma conexao assim q a sessao do jape for aberta. 
+	    Isso faz com que o pool de conexoes seja melhor aproveitado, pois as chamadas subsequentes a getConnection vao retornar sempre a mesma conexao  
+	    -->
+	    <param name="early.connection.datasource">java:/MGEDS</param>
+	</parameters>
+	<providers>
+	 	<provider location="br/com/sankhya/treina/dwfdata/dd/treina-dwf.xml"/> 
+	</providers>
+</jape>

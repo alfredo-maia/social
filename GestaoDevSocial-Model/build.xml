@@ -1,0 +1,104 @@
+ <project name="GestaoDevSocial-Model" basedir=".">
+
+	<property name="NomeExtensao" value="gestaodevsocial" />
+
+	<property name="jarName" value="${NomeExtensao}-model.jar" />
+	<property name="jarFile" value="build\${jarName}" />
+	<property name="temp" value="C:\temp\${NomeExtensao}-model" />
+	<property name="temp.bin" value="${temp}/bin" />
+	<property name="main.src" value="src" />
+	<property name="main.ejbsrc" value="ejbsrc" />
+	<property name="ext.build.dir" value="${home.skjava}\BuildExts\${NomeExtensao}\buildDir-${NomeExtensao}" />
+	<property name="defaultjboss" value="${default.jboss}" />
+
+	<path id="project.class.path">
+		<fileset dir="${api_sankhya}">
+			<include name="*.jar" />
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${api_outros}">
+			<include name="*.jar" />
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${api_custom}\${NomeExtensao}\java-lib">
+			<include name="*.jar" />
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	<path id="project.source.path">
+		<pathelement location="${main.src}" />
+		<pathelement location="${main.ejbsrc}" />
+	</path>
+	<target name="1 - Gerar interface EJBs" depends="z-create-temp" if="eclipse.home">
+		<delete dir="${basedir}\ejbsrc">
+			<include name="**/*.java" />
+		</delete>
+		<ant dir="${basedir}" antfile="${basedir}\xdoclet-build.xml" />
+		<!--
+		<echo message="ATENCAO!!! Interfaces geradas em TimImob-Model\ejbsrc. Atualize o pacote TimImob-Model (refresh) ANTES de gerar o JAR." />
+		-->
+	</target>
+	<target name="2 - Gerar JAR" depends="z-create-temp,z-javac" if="eclipse.home">
+		<mkdir dir="build" />
+		<delete file="${jarFile}" />
+		<jar destfile="${jarFile}">
+			<zipfileset dir="build/META-INF" prefix="META-INF">
+				<include name="**/*" />
+				<include name="*" />
+			</zipfileset>
+			<zipfileset dir="${temp.bin}">
+				<include name="**/*" />
+				<include name="*" />
+			</zipfileset>
+		</jar>
+		<echo message="JAR criado." />
+	</target>
+	<target name="3 - Deploy JAR" depends="z-create-temp" if="eclipse.home">
+		<echo message="Fazendo deploy do JAR ${jarFile} para o servidor de aplicacoes." />
+		<copy file="${jarFile}" todir="${defaultjboss}\deploy" verbose="true" />
+	</target>
+	<target name="4 - Enviar EJBs para gerar extensao" depends="z-create-temp" if="eclipse.home">
+		<delete file="${ext.build.dir}\ejb\${jarName}" failonerror="false" />
+		<copy file="${jarFile}" todir="${ext.build.dir}\ejb">
+		</copy>
+		<echo message="JAR copiado para ${ext.build.dir}\ejb. ${line.separator}Apos enviar tambem o .war e as libs, utilize o Skw Extension Tool para gerar sua extensao." />
+	</target>
+	<target name="5 - Executar Todos Menos passo 1" depends="2 - Gerar JAR,3 - Deploy JAR,4 - Enviar EJBs para gerar extensao" />
+	<target name="6 - Executar Todos" depends="1 - Gerar interface EJBs,2 - Gerar JAR,3 - Deploy JAR,4 - Enviar EJBs para gerar extensao, z-copyjar-api-custom" />
+	<target name="Deletar Temp do Projeto">
+		<delete dir="${temp}" verbose="true" />
+	</target>
+	<target name="z-javac" description="Compilar java">
+		<echo>Limpando .class</echo>
+		<echo>Compilando Java</echo>
+		<echo message="Using Java version ${ant.java.version}." />
+		<javac debug="on" source="1.7" target="1.7" destdir="${temp.bin}" includeantruntime="false" compiler="modern" encoding="ISO-8859-1">
+			<classpath refid="project.class.path" />
+			<src refid="project.source.path" />
+		</javac>
+		<copy todir="${temp.bin}" verbose="true" includeemptydirs="false">
+			<fileset dir="${main.src}" excludes="**/*.java" />
+		</copy>
+	</target>
+	<target name="z-check-ant" unless="eclipse.home">
+		<echo message="Propriedades requeridas nao disponiveis (rode este ANT dentro da mesma JRE do seu Eclipse). ${line.separator}Botao direito no ant>Run As...>Ant Build...>Aba JRE>Marcar opcao 'Run in the same JRE as the workspace'." />
+	</target>
+	<target name="z-create-temp" depends="z-check-ant">
+		<mkdir dir="${temp.bin}" />
+		<mkdir dir="${ext.build.dir}\ejb" />
+	</target>
+
+	<target name="z-copyjar-api-custom" description="Copia dependencias da EXT para o lib do Jboss">
+		<echo>Fazendo deploy dos jar de api_custom</echo>
+		<copy verbose="true" todir="${defaultjboss}\lib">
+			<fileset dir="${api_custom}\${NomeExtensao}\java-lib">
+				<include name="**/*.*" />
+			</fileset>
+		</copy>
+		<copy verbose="true" todir="${ext.build.dir}\lib">
+			<fileset dir="${api_custom}\${NomeExtensao}\java-lib">
+				<include name="**/*.*" />
+			</fileset>
+		</copy>
+	</target>
+</project>

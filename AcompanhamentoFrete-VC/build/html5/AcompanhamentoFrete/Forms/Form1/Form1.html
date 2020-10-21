@@ -1,0 +1,28 @@
+<p>Formulário c/ padrão de colunas:</p>
+<!-- Formulário estático -->
+<sk-simple-form>
+    <sk-simple-item sk-label="Campo 1">
+        <sk-text-input sk-value="campo1"></sk-text-input>
+    </sk-simple-item>
+    <sk-simple-item sk-label="Campo 2">
+        <sk-text-input sk-value="campo2"></sk-text-input>
+    </sk-simple-item>
+    <sk-simple-group sk-label="Grupo de campos">
+        <sk-simple-item sk-label="Campo 3" sk-required="true">
+            <sk-text-input sk-value="campo3"></sk-text-input>
+        </sk-simple-item>
+    </sk-simple-group>
+</sk-simple-form>
+<br>
+<p>Formulário de 2 colunas:</p>
+<sk-simple-form sk-columns="2">
+    <sk-simple-item sk-label="Campo 1">
+        <sk-number-input sk-value="campo1"></sk-number-input>
+    </sk-simple-item>
+    <sk-simple-item sk-label="Campo 2" sk-help-tip="Ajuda para o campo 2">
+        <sk-number-input sk-value="campo2"></sk-number-input>
+    </sk-simple-item>
+    <sk-simple-item sk-label="Campo 3" sk-required="true" sk-help-tip="Ajuda para o campo 3">
+        <sk-number-input sk-value="campo2"></sk-number-input>
+    </sk-simple-item>
+</sk-simple-form>

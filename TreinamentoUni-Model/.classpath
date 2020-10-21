@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="/api_sankhya/sanutil.jar" sourcepath="/SankhyaUtil"/>
+	<classpathentry kind="lib" path="/api_sankhya/sanws.jar"/>
+	<classpathentry kind="lib" path="/api_sankhya/mge-modelcore.jar" sourcepath="/MGE-Modelcore-3.16.0"/>
+	<classpathentry kind="lib" path="/api_sankhya/jape.jar" sourcepath="/JAPE"/>
+	<classpathentry kind="lib" path="/api_outros/servlet.jar"/>
+	<classpathentry kind="lib" path="/api_outros/gson-2.1.jar"/>
+	<classpathentry kind="lib" path="/api_outros/Jboss_326/jbossall-client.jar"/>
+	<classpathentry kind="lib" path="/api_outros/jdom.jar" sourcepath="D:/Developer/Api outros/jdom/jdom-1.0/src"/>
+	<classpathentry kind="lib" path="/api_sankhya/mge-modulemgr.jar"/>
+	<classpathentry kind="lib" path="/api_outros/commons-fileupload-1.2.2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

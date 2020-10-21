@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<HttpServiceBroker
+	authenticator="br.com.sankhya.dwf.services.DefaultAuthenticator">
+	
+	<providers>
+		<provider domain="TreinamentoSP"
+			class="br.com.sankhya.treina.services.TreinamentoSPBean"
+			type="ejb-stateless"
+			jndi="br/com/sankhya/treina/services/TreinamentoSP"
+			authentication="true" />
+			
+	</providers> 
+	
+</HttpServiceBroker>

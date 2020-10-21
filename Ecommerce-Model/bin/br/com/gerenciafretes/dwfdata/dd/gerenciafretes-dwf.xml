@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE metadata-provider >
+<metadata-provider batch-fetch-size="200"
+	data-source="java:/MGEDS"
+	event-listener="br.com.sankhya.modelcore.dwfdata.DynamicEntityLoader"
+	name="gerenciafretes-dwf" parent="mge-dwf" use-ejb="false" verbose="false">
+	<container-config commit-type-d-refresh-rate="120"
+		entity-cache-max-idle="1800" entity-cache-max-size="5000"
+		instance-cache-max-size="2000" />
+
+	<descriptor
+		location='br/com/gerenciafretes/dwfdata/dd/GerenciaFretes.xml'
+		name='GerenciaFretes' />
+	<descriptor
+		location='br/com/gerenciafretes/dwfdata/dd/GerenciaFretesDet.xml'
+		name='GerenciaFretesDet' />
+
+</metadata-provider>

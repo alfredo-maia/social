@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="XDoclet Generator" default="_xdoclet_generation_">
+	<property file="xdoclet-build.properties" />
+	<property name="xdoclet.basedir" value="${eclipse.home}/plugins/org.jboss.ide.eclipse.xdoclet.core_2.0.1.GA" />
+	<property name="jboss.net.version" value="4.0" />
+	<property name="METAINF" value="${basedir}/build/META-INF" />
+	<path id="project.classpath">
+		<pathelement location="${eclipse.home}/plugins/org.jboss.ide.eclipse.jdt.j2ee.core_1.6.0.GA/lib/j2ee-1.4/ejb-api.jar" />
+		<pathelement location="${eclipse.home}/plugins/org.jboss.ide.eclipse.jdt.j2ee.core_1.6.0.GA/lib/j2ee-1.4/jacc-api.jar" />
+		<pathelement location="${eclipse.home}/plugins/org.jboss.ide.eclipse.jdt.j2ee.core_1.6.0.GA/lib/j2ee-1.4/jca-api.jar" />
+		<pathelement location="${eclipse.home}/plugins/org.jboss.ide.eclipse.jdt.j2ee.core_1.6.0.GA/lib/j2ee-1.4/jms-api.jar" />
+		<pathelement location="${eclipse.home}/plugins/org.jboss.ide.eclipse.jdt.j2ee.core_1.6.0.GA/lib/j2ee-1.4/jsp-api.jar" />
+		<pathelement location="${eclipse.home}/plugins/org.jboss.ide.eclipse.jdt.j2ee.core_1.6.0.GA/lib/j2ee-1.4/jta-api.jar" />
+		<pathelement location="${eclipse.home}/plugins/org.jboss.ide.eclipse.jdt.j2ee.core_1.6.0.GA/lib/j2ee-1.4/servlet-api.jar" />
+		<pathelement location="${eclipse.home}/plugins/org.jboss.ide.eclipse.jdt.j2ee.core_1.6.0.GA/lib/j2ee-1.4/sql-api.jar" />
+		<fileset dir="${api_sankhya}">
+			<include name="*.jar" />
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${api_outros}">
+			<include name="*.jar" />
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${api_custom}/${NomeExtensao}/java-lib">
+			<include name="*.jar" />
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	<path id="xdoclet.classpath">
+		<path refid="project.classpath" />
+		<fileset dir="${xdoclet.basedir}">
+			<include name="*.jar" />
+			<exclude name="xdoclet-module-jboss-net-*.jar" />
+		</fileset>
+		<fileset dir="${xdoclet.basedir}">
+			<include name="xdoclet-module-jboss-net-${jboss.net.version}*.jar" />
+		</fileset>
+	</path>
+	<target name="_xdoclet_generation_" depends="N65540" />
+	<target name="N65540" description="EJB">
+
+		<copy file="${METAINF}/jboss.xml" tofile="${METAINF}/jboss-copy.xml" overwrite="true" />
+		<copy file="${METAINF}/ejb-jar.xml" tofile="${METAINF}/ejb-jar-copy.xml" overwrite="true" />
+
+		<delete file="${METAINF}/jboss.xml" verbose="true" />
+		<delete file="${METAINF}/ejb-jar.xml" verbose="true" />
+
+		<taskdef name="ejbdoclet" classname="xdoclet.modules.ejb.EjbDocletTask" classpathref="xdoclet.classpath" />
+		<ejbdoclet ejbSpec="2.0" excludedTags="@version,@author,@todo" destDir="${main.src}" force="" verbose="true" addedTags="@xdoclet-generated at ${TODAY},@copyright The XDoclet Team,@author XDoclet,@version ${version}">
+			<fileset dir="${main.src}" includes="**/*Bean.java" />
+			<remoteinterface destDir="${main.ejbsrc}" />
+			<localinterface destDir="${main.ejbsrc}" />
+			<homeinterface destDir="${main.ejbsrc}" />
+			<localhomeinterface templateFile="${api_sankhya}/templates/jape-home.xdt" destDir="${main.ejbsrc}" />
+			<entitybmp templateFile="${api_sankhya}/templates/jape.xdt" destDir="${main.ejbsrc}" />
+			<session destDir="${main.ejbsrc}" />
+			<deploymentdescriptor xmlencoding="ISO-8859-1" validateXML="false" destDir="${METAINF}" />
+			<jboss Version="3.0" destDir="${METAINF}" mergeDir="${METAINF}" />
+		</ejbdoclet>
+
+		<copy file="${METAINF}/jboss.xml" tofile="${METAINF}/tinyejb-jboss.xml"  overwrite="true" />
+		<copy file="${METAINF}/ejb-jar.xml" tofile="${METAINF}/tinyejb-ejb-jar.xml" overwrite="true" />
+
+		<copy file="${METAINF}/jboss-copy.xml"  tofile="${METAINF}/jboss.xml" overwrite="true"/>
+		<copy file="${METAINF}/ejb-jar-copy.xml"  tofile="${METAINF}/ejb-jar.xml" overwrite="true"/>
+
+		<delete file="${METAINF}/jboss-copy.xml" verbose="true" />
+		<delete file="${METAINF}/ejb-jar-copy.xml" verbose="true" />
+
+		<replaceregexp file="${METAINF}/tinyejb-jboss.xml" match="&lt;\!DOCTYPE.*&gt;" replace="" byline="true" />
+		<replaceregexp file="${METAINF}/tinyejb-ejb-jar.xml" match="&lt;\!DOCTYPE.*&gt;" replace="" byline="true" />
+
+	</target>
+</project>

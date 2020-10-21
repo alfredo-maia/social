@@ -1,0 +1,20 @@
+<sk-application ng-controller="AcompanhamentoFreteController as ctrl" flex="none" layout="column">
+
+    <sk-dynaform sk-id="ctrl.dynaformID" sk-entity-name="AcompanhamentoFreteCHG"
+        sk-on-dynaform-loaded="ctrl.onDynaformLoad(dynaform,dataset)"
+        sk-custom-tabs-loader="ctrl.customTabsLoader(entityName)"
+        sk-other-options-loader="ctrl.otherOptionsLoader(dynaform)" layout="column" flex>
+
+        <!-- comentario -->
+        <dynaform-acompanhamento-frete-c-h-g>
+            <sk-right-top-bar>
+                <button primary ng-click="ctrl.importarArquivo()">Adicionar Arquivo</button>
+                <sk-file-input sk-file-key="{{ ::ctrl.chaveArquivo }}"
+                    sk-upload-state="ctrl.uploadFineshed($state, $value)" sk-before-upload="ctrl.beforeState()">Importar
+                    Arquivo</sk-file-input>
+            </sk-right-top-bar>
+        </dynaform-acompanhamento-frete-c-h-g>
+
+    </sk-dynaform>
+
+</sk-application>

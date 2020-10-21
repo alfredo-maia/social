@@ -1,0 +1,24 @@
+body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+body > #pageWrapper {
+    height: 100%;
+    width: 100%;
+}
+
+body > #pageWrapper > #page {
+    height: 100%;
+    width: 100%;
+}
+
+body > #pageWrapper > #page > sk-application {
+    height: 100%;
+    width: 100%;
+}
+
+sk-application {
+    background-color: rgb(250,250,250);
+}

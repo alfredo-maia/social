@@ -1,0 +1,20 @@
+<sk-application ng-controller="GerenciaFretesController as ctrl">
+
+    <sk-dynaform sk-entity-name="GerenciaFretes" 
+        sk-dynaform-interceptor="ctrl"
+        sk-skip-start-page="false"
+        sk-default-mode="master"
+        sk-on-dynaform-loaded="ctrl.onDynaformLoaded(dynaform, dataset)">
+        
+        <dynaform-gerencia-fretes-det>
+        	<sk-right-top-bar>
+				<button primary ng-click="ctrl.inserirFrete()">Inserir Frete</button>
+				<button info ng-click="ctrl.dividirValor()">Dividir Vlr. Frete</button>
+				<button warning ng-click="ctrl.duplicarFrete()">Duplicar Frete</button>
+        	<sk-right-top-bar>
+        <dynaform-gerencia-fretes-det>
+        
+    </sk-dynaform>
+    
+</sk-application>
+

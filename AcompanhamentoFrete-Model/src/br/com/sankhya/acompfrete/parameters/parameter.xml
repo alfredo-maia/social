@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE parameters>
+<parameters group-name="mge.acompfrete" 
+data-source="br.com.sankhya.modelcore.util.MGECoreParameter">
+	
+	<!-- Types = integer number string boolean -->
+	<parameter
+	    name="br.com.sankhya.acompfrete.parametro.chgnotamodfrete"
+	    key="CHGNOTAMODFRETE"
+	    type="integer"
+	    cacheable="false"
+	    required="false"
+	    default="0"
+	    description="[CHG]Nota modelo para lançamento de notas de acomp. frete"
+	    module="E"
+	/>
+	
+	<parameter
+	    name="br.com.sankhya.treinamento.parametro.chgfinmodfrete"
+	    key="CHGFINMODFRETE"
+	    type="integer"
+	    cacheable="false"
+	    required="false"
+	    default="0"
+	    description="[CHG]Financeiro modelo para lançamentos de eventos de frete"
+	    module="E"
+	/>
+</parameters>

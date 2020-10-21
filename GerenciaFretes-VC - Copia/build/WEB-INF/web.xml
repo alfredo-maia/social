@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app id="gerenciafretes">
+	<display-name>gerenciafretes</display-name>
+	
+	<filter>
+		<filter-name>loginFilter</filter-name>
+		<filter-class>br.com.sankhya.dwf.controller.servlet.DefaultMgeFilter</filter-class>
+		<init-param>
+			<param-name>imp-user-application</param-name>
+			<param-value>br.com.sankhya.dwf.DefaultUserApplicationImpl</param-value>
+		</init-param>
+	</filter>
+
+	<filter>
+		<filter-name>checaLogin</filter-name>
+		<filter-class>br.com.sankhya.dwf.controller.servlet.CheckLoginFilter</filter-class>
+		<init-param>
+			<param-name>xmlConfig</param-name>
+			<param-value>resources/login-filter.xml</param-value>
+		</init-param>
+	</filter>
+
+	<filter>
+		<filter-name>GZIPFilter</filter-name>
+		<filter-class>br.com.sankhya.ws.GZIPFilter</filter-class>
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		<init-param>
+			<param-name>minimumSize</param-name>
+			<param-value>1024</param-value>
+		</init-param>
+	</filter>
+
+	<filter>
+		<filter-name>serviceBroker</filter-name>
+		<filter-class>br.com.sankhya.dwf.controller.servlet.HttpServiceBrokerFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>loginFilter</filter-name>
+		<url-pattern>*.html</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>loginFilter</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>loginFilter</filter-name>
+		<url-pattern>*.scmd</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>loginFilter</filter-name>
+		<url-pattern>*.flex</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>loginFilter</filter-name>
+		<url-pattern>*.xhtml5</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>loginFilter</filter-name>
+		<url-pattern>*.sbr</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>GZIPFilter</filter-name>
+		<url-pattern>*.sbr</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>serviceBroker</filter-name>
+		<url-pattern>*.sbr</url-pattern>
+	</filter-mapping>
+
+	<servlet>
+		<servlet-name>HttpServiceBroker</servlet-name>
+		<servlet-class>br.com.sankhya.ws.HttpServiceBroker</servlet-class>
+		<init-param>
+			<param-name>service-providers</param-name>
+			<param-value>WEB-INF/resources/service-providers.xml</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet>
+		<servlet-name>FlexLauncher</servlet-name>
+		<servlet-class>br.com.sankhya.dwf.controller.servlet.FlexLauncher</servlet-class>
+		<load-on-startup>5</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>XHtml5Launcher</servlet-name>
+		<servlet-class>br.com.sankhya.dwf.controller.servlet.Html5Launcher</servlet-class>
+		<load-on-startup>6</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>HttpServiceBroker</servlet-name>
+		<url-pattern>*.sbr</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FlexLauncher</servlet-name>
+		<url-pattern>*.flex</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>XHtml5Launcher</servlet-name>
+		<url-pattern>*.xhtml5</url-pattern>
+	</servlet-mapping>
+
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>
+</web-app>

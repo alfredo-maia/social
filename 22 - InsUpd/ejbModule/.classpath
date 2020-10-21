@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path=""/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/developer/apis/commons-3.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/developer/apis/commons-io-2.1.jar"/>
+	<classpathentry kind="lib" path="C:/developer/apis/api_sankhya/lib/jasperreports-1.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/developer/apis/javax.ejb.jar"/>
+	<classpathentry kind="lib" path="C:/developer/apis/jdom-1.1/build/jdom.jar"/>
+	<classpathentry kind="lib" path="C:/developer/apis/mge-modelcore.jar"/>
+	<classpathentry kind="lib" path="C:/developer/apis/api_sankhya/print-service-base-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/developer/apis/sankhyaw_utils.jar"/>
+	<classpathentry kind="lib" path="C:/developer/apis/SankhyaW-extensions.jar"/>
+	<classpathentry kind="lib" path="C:/developer/apis/sanutil.jar"/>
+	<classpathentry kind="lib" path="C:/developer/apis/api_sankhya/lib/sanws-3.10.0b162.jar"/>
+	<classpathentry kind="lib" path="C:/developer/apis/skw-cuckoo.jar"/>
+	<classpathentry kind="lib" path="C:/developer/apis/xml-utils-1.1.1.jar/xml-utils-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/developer/apis/apache/poi-4.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/developer/apis/gson/gson-2.8.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Avell/Downloads/JAR baixados/utils/sanutil-4.2b139.jar"/>
+	<classpathentry kind="lib" path="C:/developer/apis/jape-4.2b184.jar"/>
+	<classpathentry kind="lib" path="C:/developer/apis/core"/>
+	<classpathentry kind="lib" path="C:/developer/api_integracao/commons-codec-1.3.jar"/>
+	<classpathentry kind="lib" path="C:/developer/api_integracao/gson-2.1.jar"/>
+	<classpathentry kind="lib" path="C:/developer/api_integracao/SWService.jar"/>
+	<classpathentry kind="output" path=""/>
+</classpath>

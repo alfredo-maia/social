@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<HttpServiceBroker
+	authenticator="br.com.sankhya.dwf.services.DefaultAuthenticator">
+	
+	<providers>
+		<provider domain="GerenciaFretesSP"
+			class="br.com.gerenciafretes.services.GerenciaFretesSPBean"
+			type="ejb-stateless"
+			jndi="br/com/gerenciafretes/services/GerenciaFretesSP"
+			authentication="true" />
+	</providers> 
+	
+</HttpServiceBroker>

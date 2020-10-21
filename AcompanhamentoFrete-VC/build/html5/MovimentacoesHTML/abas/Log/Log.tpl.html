@@ -1,0 +1,23 @@
+<sk-dataset id="dsLog" entity-name="LogIntegracao"
+	sk-dataset-created="ctrl.onDatasetCreated(dataset)"> <sk-field
+	pattern="*"></sk-field> </sk-dataset>
+
+
+<sk-vbox gap="10" flex sk-padding="3"> 
+	<sk-hbox gap="10" sk-padding="3"> 
+	
+		<sk-navigator dataset="dsLog"
+			sk-show-add-button="false" sk-show-copy-button="false"
+			sk-show-remove-button="false" sk-show-cancel-button="true"
+			sk-show-save-button="true">
+		</sk-navigator> 
+		
+		<span flex></span> 
+		
+		<sk-rows-counter sk-dataset="dsLog"> </sk-rows-counter> 
+		
+	</sk-hbox>
+	 	<sk-datagrid sk-dataset="dsLog" sk-editable="true" sk-margin="10"> 
+	</sk-datagrid> 
+
+</sk-vbox>

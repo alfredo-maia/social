@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<modulos>
+	<modulo nome="gestaodevsocial" descricao="Gestão do Desenvolvimento de Sistemas" jsp-detalhe="inf/modulo.jsp" icone="imagens/gi-ico.gif" pagina-inicial="Screen.scmd%3Ffw%3D/tela.jsp%26cmd%3DcarregarTela%26idTela%3D6755">
+	</modulo>
+</modulos>

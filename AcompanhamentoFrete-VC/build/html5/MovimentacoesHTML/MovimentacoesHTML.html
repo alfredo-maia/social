@@ -1,0 +1,26 @@
+<sk-application ng-controller="MovimentacoesHTMLController as ctrl"
+	flex="none" layout="column"> 
+	
+	<sk-dynaform
+		sk-id="ctrl.dynaformID" sk-entity-name="InstanciaPai"
+		sk-on-dynaform-loaded="ctrl.onDynaformLoad(dynaform,dataset)"
+		sk-custom-tabs-loader="ctrl.customTabsLoader(entityName)" 
+		sk-other-options-loader="ctrl.otherOptionsLoader(dynaform)"
+		layout="column" flex> 
+		
+		<dynaform-instancia-pai>
+			<sk-right-top-bar>
+	    	 	<sk-file-input sk-file-key="{{ ::ctrl.chaveArquivo }}" sk-upload-state="ctrl.uploadFineshed($state, $value)" sk-before-upload="ctrl.beforeState()"></sk-file-input>
+	    	 </sk-right-top-bar>
+    	</dynaform-instancia-pai>
+    	
+    	<dynaform-instancia-filha>
+    		<sk-right-top-bar>
+	    		 <button ng-click="ctrl.importarArquivo()">Importar Arquivo</button>
+	    	 </sk-right-top-bar>
+    	</dynaform-instancia-filha>
+    	
+    	
+	</sk-dynaform> 
+	
+</sk-application>	

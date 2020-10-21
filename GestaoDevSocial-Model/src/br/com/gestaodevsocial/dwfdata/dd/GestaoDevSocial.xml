@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE entity>
+
+<entity name="AD_TGSGDS" main-object="AD_TGSGDS" commit-type="D">
+  <runtime max-results="500" timeout="20" load-on-find="true" />
+  <event-listener class="br.com.gestaodevsocial.listeners.GereDevListener" />
+</entity>
+

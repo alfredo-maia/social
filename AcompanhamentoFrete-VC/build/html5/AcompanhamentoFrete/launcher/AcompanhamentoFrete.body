@@ -1,0 +1,6 @@
+<ignored>
+    <script type="text/javascript" src="html5/AcompanhamentoFrete/Forms/Form1/Form1.controller.js"></script>
+    <script type="text/javascript" src="html5/AcompanhamentoFrete/Forms/Form2/Form2.controller.js"></script>
+	<script type="text/javascript" src="html5/AcompanhamentoFrete/popup/popupConfigAvancadas.controller.js"></script>
+    <script type="text/javascript" src="html5/AcompanhamentoFrete/popup/popupImportacaoCadKIA.controller.js"></script>
+</ignored>

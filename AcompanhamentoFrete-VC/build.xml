@@ -1,0 +1,106 @@
+<project name="AcompanhamentoFrete-VC" basedir=".">
+
+	<property name="NomeExtensao" value="acompfrete" />
+
+	<property name="warName" value="${NomeExtensao}-web.war" />
+	<property name="temp" value="C:\temp\${NomeExtensao}-vc" />
+	<property name="temp.bin" value="${temp}\bin" />
+	<property name="temp.war" value="${temp}\war" />
+
+	<property name="main.src" value="src" />
+	<property name="ext.build.dir" value="${home.skjava}\BuildExts\${NomeExtensao}\buildDir-${NomeExtensao}" />
+	<property name="defaultjboss" value="${home.skjava}\AS\jboss_atacadist\server\default" />
+
+	<path id="project.class.path">
+		<fileset dir="${api_sankhya}">
+			<include name="*.jar" />
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${api_outros}">
+			<include name="*.jar" />
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${api_custom}/${NomeExtensao}/java-lib">
+			<include name="*.jar" />
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	<target name="1 - Compilar Java" depends="z-create-temp,z-javac" />
+	<target name="2 - Montar WAR" depends="z-create-temp">
+		<copy todir="${temp.war}/WEB-INF/classes" verbose="true" includeemptydirs="false">
+			<fileset dir="${temp.bin}">
+				<include name="**/*" />
+				<include name="*" />
+			</fileset>
+		</copy>
+		<copy todir="${temp.war}" verbose="true" includeemptydirs="false">
+			<fileset dir="${basedir}/build">
+				<include name="**/*" />
+				<include name="*" />
+			</fileset>
+		</copy>
+	</target>
+	<target name="3 - Deploy WAR" depends="z-create-temp">
+		<delete dir="${defaultjboss}\deploy\${warName}" />
+		<copy todir="${defaultjboss}\deploy\${warName}" verbose="true">
+			<fileset dir="${temp.war}">
+				<include name="*" />
+				<include name="**/*" />
+			</fileset>
+		</copy>
+		<echo message="Feito deploy no servidor de aplicacoes em ${defaultjboss}\deploy para ${warName}" />
+	</target>
+	<target name="4 - Enviar WAR para gerar extensão" depends="z-create-temp">
+		<delete file="${ext.build.dir}\web\${warName}" failonerror="false" />
+		<jar destfile="${ext.build.dir}\web\${warName}">
+			<zipfileset dir="${temp.war}">
+				<include name="*" />
+				<include name="**/*" />
+			</zipfileset>
+		</jar>
+		<echo message="WAR para extensao disponivel em ${ext.build.dir}\web\${warName}. ${line.separator}Apos enviar tambem o JAR(EJBs) e as libs, utilize o Skw Extension Tool para gerar sua extensao." />
+	</target>
+	<target name="5 - Executar Todos" depends="1 - Compilar Java,2 - Montar WAR,3 - Deploy WAR,4 - Enviar WAR para gerar extensão" />
+
+	<target name="HTML5" description="atualiza arquivos utilizados apenas nas telas em HTML5 - NAO é necessario reiniciar o servidor">
+		<echo>Atualizando arquivos do HTML5 em ${default.jboss}\deploy\${war_name}\ </echo>
+		<copy todir="${default.jboss}/deploy/${warName}/html5" failonerror="true" verbose="true">
+			<fileset dir="${basedir}/build/html5">
+				<include name="**/*.js" />
+				<include name="**/*.png" />
+				<include name="**/*.gif" />
+				<include name="**/*.jpg" />
+				<include name="**/*.css" />
+				<include name="**/*.html" />
+				<include name="**/*.parameters" />
+				<include name="**/*.body" />
+				<include name="**/*.include" />
+				<include name="**/*.svg" />
+				<include name="**/*.i18nbundles" />
+			</fileset>
+		</copy>
+	</target>
+	<target name="Deletar Temp do Projeto" depends="z-create-temp">
+		<delete dir="${temp}" verbose="true" />
+	</target>
+	<target name="z-javac" depends="z-create-temp" description="Compilar java">
+		<echo>Limpando .class</echo>
+		<echo>Compilando Java</echo>
+		<javac debug="on" source="1.7" target="1.7" srcdir="${main.src}" destdir="${temp.bin}" includeantruntime="false" compiler="modern" encoding="UTF-8">
+			<classpath refid="project.class.path" />
+		</javac>
+		<copy todir="${temp.bin}" verbose="true" includeemptydirs="false">
+			<fileset dir="${main.src}">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+	</target>
+	<target name="z-create-temp">
+		<mkdir dir="${temp.bin}" />
+		<mkdir dir="${temp.war}" />
+		<mkdir dir="${ext.build.dir}\web" />
+	</target>
+	<target name="z-check-ant" unless="eclipse.home">
+		<echo message="Propriedades requeridas nao disponiveis (rode este ANT dentro da mesma JRE do seu Eclipse). ${line.separator}Botao direito no ant>Run As...>Ant Build...>Aba JRE>Marcar opcao 'Run in the same JRE as the workspace'." />
+	</target>
+</project>
