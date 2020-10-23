@@ -98,14 +98,11 @@ public class RegrasUsuSocial implements EventoProgramavelJava{
 			}else if (ncmOld.equals("S") && ncmNew.equals("N")) {
 				
 				//Remover informações no relatório 144
-		        throw new Exception("Equals: " + "N".equals(ncmOld) + " valor: " + ncmOld + " " + "S".equals(ncmNew) + " valor:  " + ncmNew );
-			   /*  FinderWrapper finderWrapper = new FinderWrapper("RELPARMUSU", "NURELPARM = 144 AND CODUSU = " + usuVoNew.asBigDecimal("CODUSU"));
+			     FinderWrapper finderWrapper = new FinderWrapper("RELPARMUSU", "NURELPARM = 144 AND CODUSU = " + usuVoNew.asBigDecimal("CODUSU"));
 			     dwfFacade.removeByCriteria(finderWrapper);
-			   */
+			   
 			}
 			
-	        throw new Exception("Equals: " + (ncmOld.equals("S") && ncmNew.equals("N")));
-
 		}catch (Exception e) {
 			
 			e.printStackTrace();
@@ -126,6 +123,12 @@ public class RegrasUsuSocial implements EventoProgramavelJava{
 		return field;
 	}
 	
+
+	@Override
+	public void beforeDelete(PersistenceEvent arg0) throws Exception {
+		
+	}
+	
 	@Override
 	public void afterDelete(PersistenceEvent arg0) throws Exception {}
 
@@ -134,9 +137,6 @@ public class RegrasUsuSocial implements EventoProgramavelJava{
 
 	@Override
 	public void beforeCommit(TransactionContext arg0) throws Exception {}
-
-	@Override
-	public void beforeDelete(PersistenceEvent arg0) throws Exception {}
 
 	@Override
 	public void beforeInsert(PersistenceEvent arg0) throws Exception {}

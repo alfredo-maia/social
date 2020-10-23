@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/sk-java/workspace/api_sankhya/jape.jar" sourcepath="/JAPE"/>
-	<classpathentry kind="lib" path="C:/sk-java/workspace/api_sankhya/mge-modelcore.jar" sourcepath="/MGE-Modelcore-3.16.0"/>
+	<classpathentry kind="lib" path="C:/sk-java/workspace/social/api_sankhya/jape.jar" sourcepath="/JAPE"/>
+	<classpathentry kind="lib" path="C:/sk-java/workspace/social/api_sankhya/mge-modelcore.jar" sourcepath="/MGE-Modelcore-3.16.0"/>
 	<classpathentry kind="lib" path="C:/sk-java/Api de Servicos de Integracao/SankhyaW-extensions.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
