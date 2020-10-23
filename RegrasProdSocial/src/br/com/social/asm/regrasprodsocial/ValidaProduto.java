@@ -1,6 +1,6 @@
 package br.com.social.asm.regrasprodsocial;
 
-import java.math.BigDecimal;
+import java.util.Collection;
 
 import br.com.sankhya.extensions.eventoprogramavel.EventoProgramavelJava;
 import br.com.sankhya.jape.EntityFacade;
@@ -8,6 +8,7 @@ import br.com.sankhya.jape.core.JapeSession;
 import br.com.sankhya.jape.core.JapeSession.SessionHandle;
 import br.com.sankhya.jape.event.PersistenceEvent;
 import br.com.sankhya.jape.event.TransactionContext;
+import br.com.sankhya.jape.util.FinderWrapper;
 import br.com.sankhya.jape.vo.DynamicVO;
 import br.com.sankhya.modelcore.auth.AuthenticationInfo;
 import br.com.sankhya.modelcore.util.EntityFacadeFactory;
@@ -43,14 +44,18 @@ public class ValidaProduto implements EventoProgramavelJava{
 			
 			EntityFacade dwfFacade = EntityFacadeFactory.getDWFFacade();
 			
-			DynamicVO perVo = (DynamicVO)dwfFacade.findEntityByPrimaryKeyAsVO("RELPARMUSU",new Object[]{new BigDecimal(144),new BigDecimal(codUsu)});
+			DynamicVO perVo = null;
 			
-			if (perVo.containsProperty("CODUSU") || codUsu == 0) {
-				return true;
-			}else {
-				return false;
-			}
-
+			FinderWrapper finderWrapper = new FinderWrapper("RELPARMUSU","NURELPARM = 144 AND CODUSU = " + codUsu);
+			
+	        Collection<DynamicVO> dynamicVOs = dwfFacade.findByDynamicFinderAsVO(finderWrapper);
+					
+	        if (dynamicVOs.isEmpty()) {
+	        	return false;
+	        } else {
+	        	return true;
+	        }
+	    
 		}catch(Exception e) {
 			
 			e.printStackTrace();
@@ -96,8 +101,8 @@ public class ValidaProduto implements EventoProgramavelJava{
 						
 						boolean permissao = usu.validaPermissao(usu.getCodUsu());
 						
-						if(!permissao) {
-							throw new Exception("Erro de validação do NCM");
+						if(permissao == false) {
+							throw new Exception();
 						}
 						
 					}

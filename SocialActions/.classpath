@@ -2,14 +2,14 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/sk-java/workspace/api_dev/javax.ejb.jar"/>
-	<classpathentry kind="lib" path="C:/sk-java/workspace/api_dev/gson-2.6.2.jar"/>
-	<classpathentry kind="lib" path="C:/sk-java/workspace/api_dev/SankhyaW-extensions.jar"/>
-	<classpathentry kind="lib" path="C:/sk-java/workspace/api_dev/SWService.jar"/>
-	<classpathentry kind="lib" path="C:/sk-java/workspace/api_sankhya/mge-modelcore.jar" sourcepath="/MGE-Modelcore-3.16.0"/>
-	<classpathentry kind="lib" path="C:/sk-java/workspace/api_sankhya/jape.jar"/>
-	<classpathentry kind="lib" path="C:/sk-java/workspace/api_sankhya/sanws.jar"/>
-	<classpathentry kind="lib" path="C:/sk-java/workspace/api_outros/jdom.jar" sourcepath="D:/Developer/Api outros/jdom/jdom-1.0/src"/>
-	<classpathentry kind="lib" path="C:/sk-java/workspace/api_sankhya/sanutil.jar" sourcepath="/SankhyaUtil"/>
+	<classpathentry kind="lib" path="C:/sk-java/workspace/social/api_dev/javax.ejb.jar"/>
+	<classpathentry kind="lib" path="C:/sk-java/workspace/social/api_sankhya/gson-2.6.2.jar"/>
+	<classpathentry kind="lib" path="C:/sk-java/workspace/social/api_sankhya/SankhyaW-extensions.jar"/>
+	<classpathentry kind="lib" path="C:/sk-java/workspace/social/api_sankhya/SWService.jar"/>
+	<classpathentry kind="lib" path="C:/sk-java/workspace/social/api_sankhya/mge-modelcore.jar" sourcepath="/MGE-Modelcore-3.16.0"/>
+	<classpathentry kind="lib" path="C:/sk-java/workspace/social/api_sankhya/jape.jar"/>
+	<classpathentry kind="lib" path="C:/sk-java/workspace/social/api_sankhya/sanws.jar"/>
+	<classpathentry kind="lib" path="C:/sk-java/workspace/social/api_outros/jdom.jar" sourcepath="D:/Developer/Api outros/jdom/jdom-1.0/src"/>
+	<classpathentry kind="lib" path="C:/sk-java/workspace/social/api_sankhya/sanutil.jar" sourcepath="/SankhyaUtil"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
