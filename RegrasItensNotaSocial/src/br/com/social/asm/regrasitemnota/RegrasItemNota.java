@@ -63,14 +63,24 @@ public class RegrasItemNota implements EventoProgramavelJava {
 		    //Recebendo os valores 
 		    String tipMov = null, usaLocalGarantia = null, codTipOper = null;
 		    
+		    int codemp = itemVo.asBigDecimal("CODEMP").intValue();
+		    
 		    if (rs.next()) {
 		    	usaLocalGarantia = rs.getString("AD_USALOCALGARANTIA");
 		    	tipMov =  rs.getString("TIPMOV");
 		    	codTipOper = rs.getString("CODTIPOPER");
 		    }
 		    
-		    //Buscando Informações do relatório 135
-		    FinderWrapper finderWrapper = new FinderWrapper("RELPARMTOP", "NURELPARM = 135 AND CODTIPOPER = " + codTipOper);
+		    //Buscando dados da Empresa
+		    EntityVO empFatModel = dwfFacade.findEntityByPrimaryKeyAsVO("Empresa", itemVo.asBigDecimal("CODEMP"));	
+		    DynamicVO empFatVo = (DynamicVO) empFatModel;
+		    
+		    //Buscando dados da UF de faturamento da empresa
+		    EntityVO cidModel = dwfFacade.findEntityByPrimaryKeyAsVO("Cidade", empFatVo.asBigDecimal("CODCID"));	
+		    DynamicVO cidVo = (DynamicVO) cidModel;
+
+		    //Buscando Informações do relatório 146
+		    FinderWrapper finderWrapper = new FinderWrapper("RELPARMTOP", "NURELPARM = 146 AND CODTIPOPER = " + codTipOper + " AND UFFAT = " + cidVo.asBigDecimal("UF"));
 		    
 		    Collection<DynamicVO> parmModelVOS = dwfFacade.findByDynamicFinderAsVO(finderWrapper);
 		    
@@ -88,27 +98,39 @@ public class RegrasItemNota implements EventoProgramavelJava {
 		    //Validando local com a top de origem 
 		    if ("S".equals(usaLocalGarantiaParam)){
 		    	
+		    	
 		    	rs = null;
 		    	
-			    queOrigem = new NativeSql(jdbc);
-			    queOrigem.appendSql("SELECT CASE WHEN ( SELECT CAB.CODTIPOPER ");
-			    queOrigem.appendSql("                     FROM TGFCAB CAB ");
-			    queOrigem.appendSql("                     WHERE CAB.NUNOTA = VAR.NUNOTAORIG ");
-			    queOrigem.appendSql("                 ) IN (1113,1613) ");
-			    queOrigem.appendSql("            THEN 'S' ");
-			    queOrigem.appendSql("        ELSE 'N' ");
-			    queOrigem.appendSql("   END AS LOCALTRANSF ");
-			    queOrigem.appendSql("  FROM TGFVAR VAR ");
-			    queOrigem.appendSql("  WHERE VAR.NUNOTA = " + itemVo.asBigDecimal("NUNOTA") + " ");
-			    queOrigem.appendSql("    AND VAR.SEQUENCIA = " + itemVo.asBigDecimal("SEQUENCIA") + " ");
+		    	  queOrigem = new NativeSql(jdbc);
+	              queOrigem.appendSql("SELECT CASE WHEN ( SELECT CAB.CODTIPOPER ");
+	              queOrigem.appendSql("                     FROM TGFCAB CAB ");
+	              queOrigem.appendSql("                     WHERE CAB.NUNOTA = VAR.NUNOTAORIG ");
+	              queOrigem.appendSql("                 ) IN (1113,1613) ");
+	              queOrigem.appendSql("            THEN 'S' ");
+	              queOrigem.appendSql("            WHEN (  SELECT C.CODTIPOPER ");
+	              queOrigem.appendSql("                      FROM TGFCAB C ");
+	              queOrigem.appendSql("                     WHERE C.NUNOTA = ");
+	              queOrigem.appendSql("                                     (   SELECT CAB.AD_NUNOTAORIG ");
+	              queOrigem.appendSql("                                           FROM TGFCAB CAB ");
+	              queOrigem.appendSql("                                          WHERE CAB.NUNOTA = VAR.NUNOTA " );
+	              queOrigem.appendSql("                                            AND CODEMP <> 1 ) ");
+	              queOrigem.appendSql("                                              ) = 1113 ");
+	              queOrigem.appendSql("                                               THEN 'S' ");
+	              queOrigem.appendSql("        ELSE 'N' ");
+	              queOrigem.appendSql("   END AS LOCALTRANSF ");
+	              queOrigem.appendSql("  FROM TGFVAR VAR ");
+	              queOrigem.appendSql("  WHERE VAR.NUNOTA = " + itemVo.asBigDecimal("NUNOTA") + " ");
+	              queOrigem.appendSql("    AND VAR.SEQUENCIA = " + itemVo.asBigDecimal("SEQUENCIA") + " ");
 			    
 			    rs = queOrigem.executeQuery();
-			    
+
 			    if (rs.next()) {
 			    	
 			    	usaLocalGarantiaParam = rs.getString("LOCALTRANSF") == null ? usaLocalGarantiaParam : rs.getString("LOCALTRANSF") ;
 			    	
 			    }
+			    
+		    	throw new Exception("Maria_Linda: " + usaLocalGarantiaParam );
 			    
 		    }
 		    
@@ -143,9 +165,7 @@ public class RegrasItemNota implements EventoProgramavelJava {
 		    	   throw new Exception("LOCAL_NAO_DEFINIDO");
 		    	   
 		    }
-		    
-		    
-		    	 
+		   
 		}catch(Exception e) {
 		    //2º Regra: Validação do Local de Origem
 			if(e.getMessage().equals("LOCAL_NAO_DEFINIDO")) {
@@ -155,11 +175,60 @@ public class RegrasItemNota implements EventoProgramavelJava {
 		    	   
 			}
 			System.out.println("Erro: " + e.getMessage());
+        	
+		}finally {
+			//Finalizando a Sessão
+			JapeSession.close(hnd);
+		}
+	}
+	
+
+	@Override
+	public void beforeUpdate(PersistenceEvent event) throws Exception {
+		//Regra para Validar Campo de Garantia para Filial
+		SessionHandle hnd = null;
+		
+		try {
+			
+			hnd = JapeSession.open();
+			//Buscando conexão com o Banco
+			EntityFacade dwfFacade = EntityFacadeFactory.getDWFFacade();
+		    
+			//Interceptando os dados do produto
+		    DynamicVO itemVo = (DynamicVO) event.getVo();
+		    
+		    EntityVO nunotaModel = dwfFacade.findEntityByPrimaryKeyAsVO("CabecalhoNota", itemVo.asBigDecimal("NUNOTA"));	
+		    DynamicVO nunota = (DynamicVO) nunotaModel;
+		    
+		    //Recebendo o valor da Flag Garantia Filial
+		    String garantiFilial = nunota.asString("AD_RETGARFILIAL");
+		    
+		  
+		    if("SIM".equals(garantiFilial)) {
+		    	
+		    	//Buscando dados sobre o produto
+			    EntityVO prodModelVo = dwfFacade.findEntityByPrimaryKeyAsVO("Produto", itemVo.asBigDecimal("CODPROD"));
+			    DynamicVO prodVo = (DynamicVO) prodModelVo;
+			    
+			    int localPadraoGar  = prodVo.asBigDecimal("AD_CODLOCALPADRAOGAR").intValue();
+			    
+			    if ( localPadraoGar != 0 ) {
+			    	
+			    	itemVo.setProperty("CODLOCALORIG",prodVo.getProperty("AD_CODLOCALPADRAOGAR"));
+			    }
+		    }
+		
+			
+		}catch(Exception e) {
+			
+			e.printStackTrace();
 			
 		}finally {
 			//Finalizando a Sessão
 			JapeSession.close(hnd);
 		}
+
+		
 	}
 
 	@Override
@@ -177,7 +246,5 @@ public class RegrasItemNota implements EventoProgramavelJava {
 	@Override
 	public void beforeDelete(PersistenceEvent arg0) throws Exception {}
 
-	@Override
-	public void beforeUpdate(PersistenceEvent arg0) throws Exception {}
 
 }
