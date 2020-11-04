@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 import com.sankhya.util.Base64Impl;
 import com.sankhya.util.TimeUtils;
@@ -16,19 +15,16 @@ import br.com.sankhya.extensions.actionbutton.Registro;
 import br.com.sankhya.jape.EntityFacade;
 import br.com.sankhya.jape.bmp.PersistentLocalEntity;
 import br.com.sankhya.jape.dao.JdbcWrapper;
-import br.com.sankhya.jape.util.FinderWrapper;
 import br.com.sankhya.jape.util.JapeSessionContext;
 import br.com.sankhya.jape.vo.DynamicVO;
 import br.com.sankhya.jape.vo.PrePersistEntityState;
 import br.com.sankhya.modelcore.auth.AuthenticationInfo;
 import br.com.sankhya.modelcore.comercial.BarramentoRegra;
-import br.com.sankhya.modelcore.comercial.CentralFaturamento;
 import br.com.sankhya.modelcore.comercial.ComercialUtils;
-import br.com.sankhya.modelcore.comercial.ConfirmacaoNotaHelper;
 import br.com.sankhya.modelcore.comercial.centrais.CACHelper;
 import br.com.sankhya.modelcore.util.EntityFacadeFactory;
 
-public class GerarNotaTransferencia implements AcaoRotinaJava {
+public class GerarNotaTransferenciaBackup implements AcaoRotinaJava {
 
 	@Override
 	public void doAction(ContextoAcao contexto) throws Exception {
@@ -38,6 +34,10 @@ public class GerarNotaTransferencia implements AcaoRotinaJava {
 		final AuthenticationInfo auth = AuthenticationInfo.getCurrent();
 		
 		final EntityFacade dwfEntityFacade = EntityFacadeFactory.getDWFFacade();
+		
+		QueryExecutor queryItens = contexto.getQuery();
+		
+		//boolean validaInsercaoNota = false;
 		
 		if (contexto.getLinhas().length > 1) {
 			contexto.mostraErro("Selecionar apenas 1 (Um) Pedido, para realizar a Geração da Transferência.");
@@ -109,40 +109,36 @@ public class GerarNotaTransferencia implements AcaoRotinaJava {
   	    	PrePersistEntityState cabPreState = PrePersistEntityState.build(dwfEntityFacade, "CabecalhoNota", pedidoVO);
   	    	BarramentoRegra bRegrasCab = cacHelper.incluirAlterarCabecalho(auth, cabPreState);
   	    	
-  	         DynamicVO newCabVO = bRegrasCab.getState().getNewVO();
+  	    	
+  	    	DynamicVO newCabVO = bRegrasCab.getState().getNewVO();
   	        
-  	        Collection<DynamicVO> produtosVo = dwfEntityFacade.findByDynamicFinderAsVO
-  	        		                               (new FinderWrapper("ItemNota", "this.NUNOTA = " + registro.getCampo("NUNOTA")));
-
-            Collection<PrePersistEntityState> itensNota = new ArrayList();
-          
-            if (produtosVo.size() < 1) {
-                throw new Exception("Não foram Localizados Produtos para Geração da Transferência ");
-            } else {
+  	    	//final BigDecimal nuNota = newCabVO.asBigDecimal("NUNOTA");
   	    	
-                for (DynamicVO iteVo : produtosVo) {
-					
-                	DynamicVO itemVo;
-                	
-                	itemVo = (DynamicVO)dwfEntityFacade.getDefaultValueObjectInstance("ItemNota");
-                	itemVo.setProperty("CODPROD", iteVo.asBigDecimal("CODPROD"));
-                	itemVo.setProperty("QTDNEG", iteVo.asBigDecimal("QTDNEG"));
-                	
-                	PrePersistEntityState itePreState = PrePersistEntityState.build(dwfEntityFacade, "ItemNota", itemVo);
-    				itensNota.add(itePreState);
-    	        	
-				}
+  	    	Collection<PrePersistEntityState> itensNota = new ArrayList<PrePersistEntityState>();
+  	    	queryItens.nativeSelect( "SELECT CODPROD, QTDNEG - QTDCONFERIDA AS QTDASERENVIADA"
+						+ " FROM TGFITE ITE"
+						+ " WHERE ITE.NUNOTA = " + registro.getCampo("NUNOTA"));
+  	    	while (queryItens.next()) {
 	            
-  	        }
+  	    		DynamicVO itemVO = (DynamicVO)dwfEntityFacade.getDefaultValueObjectInstance("ItemNota");
+	    		itemVO.setProperty("CODPROD", queryItens.getBigDecimal("CODPROD"));
+ 	    		itemVO.setProperty("QTDNEG"	 , queryItens.getBigDecimal("QTDASERENVIADA"));
+ 	    		//itemVO.setProperty("VLRUNIT" , new BigDecimal(0));
+	
+				PrePersistEntityState itePreState = PrePersistEntityState.build(dwfEntityFacade, "ItemNota", itemVO);
+				itensNota.add(itePreState);
+	        
+	        }
   	    	
+	        
 	        try {
 	        	
+	          	
    	    		cacHelper.incluirAlterarItem(newCabVO.asBigDecimal("NUNOTA"), auth, itensNota, true);
    	    		
-                bRegrasCab = BarramentoRegra.build(CentralFaturamento.class, "regrasConfirmacaoSilenciosa.xml", AuthenticationInfo.getCurrent());
-                bRegrasCab.setValidarSilencioso(true);
-                ConfirmacaoNotaHelper.confirmarNota(nuNota, bRegrasCab);
-   	    		
+   	    		//validaInsercaoNota = true;
+	        	BigDecimal nuNotaGerada = CACHelper.faturarPedido(jdbc, nuNota, modeloNotaVO.asBigDecimal("CODTIPOPER"), "1", "P", "V", true, TimeUtils.getNow(), TimeUtils.getNow());
+
    	    	}catch (Exception e) {
    	    		 e.printStackTrace();
    	    		 //final PersistentLocalEntity entity = dwfEntityFacade.findEntityByPrimaryKey("CabecalhoNota", (Object)newCabVO.asBigDecimal("NUNOTA"));
