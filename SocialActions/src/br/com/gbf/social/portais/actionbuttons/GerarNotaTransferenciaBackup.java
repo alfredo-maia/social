@@ -109,7 +109,6 @@ public class GerarNotaTransferenciaBackup implements AcaoRotinaJava {
   	    	PrePersistEntityState cabPreState = PrePersistEntityState.build(dwfEntityFacade, "CabecalhoNota", pedidoVO);
   	    	BarramentoRegra bRegrasCab = cacHelper.incluirAlterarCabecalho(auth, cabPreState);
   	    	
-  	    	
   	    	DynamicVO newCabVO = bRegrasCab.getState().getNewVO();
   	        
   	    	//final BigDecimal nuNota = newCabVO.asBigDecimal("NUNOTA");
@@ -130,10 +129,8 @@ public class GerarNotaTransferenciaBackup implements AcaoRotinaJava {
 	        
 	        }
   	    	
-	        
 	        try {
 	        	
-	          	
    	    		cacHelper.incluirAlterarItem(newCabVO.asBigDecimal("NUNOTA"), auth, itensNota, true);
    	    		
    	    		//validaInsercaoNota = true;
@@ -146,7 +143,6 @@ public class GerarNotaTransferenciaBackup implements AcaoRotinaJava {
    	    		// entity.remove();
    	    		 
    	    	 }
-	    
 
 			/*
 			 * Finalização do Pedido de Venda

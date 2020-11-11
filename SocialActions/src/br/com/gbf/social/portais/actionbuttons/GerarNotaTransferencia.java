@@ -39,6 +39,8 @@ public class GerarNotaTransferencia implements AcaoRotinaJava {
 		
 		final EntityFacade dwfEntityFacade = EntityFacadeFactory.getDWFFacade();
 		
+    	JdbcWrapper jdbc = dwfEntityFacade.getJdbcWrapper(); 
+		
 		if (contexto.getLinhas().length > 1) {
 			contexto.mostraErro("Selecionar apenas 1 (Um) Pedido, para realizar a Geração da Transferência.");
 		}
@@ -47,12 +49,9 @@ public class GerarNotaTransferencia implements AcaoRotinaJava {
 	    	
 			final Registro registro = linhas[i];
 			
-			// Chamar Procedure para Validar de se o que o Alfredo quiser.   			
-        	JdbcWrapper jdbc = null;
-        	
+	
         	try{
         		
-        		jdbc = dwfEntityFacade.getJdbcWrapper();   	 
         		jdbc.openSession();
 
         		CallableStatement cstmt = jdbc.getConnection().prepareCall("{call Stp_ValTransf_Social(?)}");
@@ -137,11 +136,19 @@ public class GerarNotaTransferencia implements AcaoRotinaJava {
   	    	
 	        try {
 	        	
+        		jdbc.openSession();
+
    	    		cacHelper.incluirAlterarItem(newCabVO.asBigDecimal("NUNOTA"), auth, itensNota, true);
-   	    		
-                bRegrasCab = BarramentoRegra.build(CentralFaturamento.class, "regrasConfirmacaoSilenciosa.xml", AuthenticationInfo.getCurrent());
-                bRegrasCab.setValidarSilencioso(true);
-                ConfirmacaoNotaHelper.confirmarNota(nuNota, bRegrasCab);
+   	  
+                CentralFaturamento fat = new CentralFaturamento();
+                
+                Collection<BigDecimal> notasSelecao = new ArrayList();
+                
+                notasSelecao.add(newCabVO.asBigDecimal("NUNOTA"));
+                
+                fat.faturar(notasSelecao,nuNota,jdbc);
+                
+                fat.
    	    		
    	    	}catch (Exception e) {
    	    		 e.printStackTrace();
@@ -150,13 +157,19 @@ public class GerarNotaTransferencia implements AcaoRotinaJava {
    	    		// entity.remove();
    	    		 
    	    	 }
+	        
+	        finally {
+	        	
+        		JdbcWrapper.closeSession(jdbc);	
+
+	        }
 	    
 
 			/*
 			 * Finalização do Pedido de Venda
 			 */
 	        
-			contexto.setMensagemRetorno(String.valueOf(String.format("Pedido de Nro Único gerada com sucesso.\nClique ", nuNota)) + this.getLinkNota("aqui", nuNota) + " para abrir o Pedido de Venda gerado.");	
+			contexto.setMensagemRetorno(String.valueOf(String.format("Pedido de Nro Único gerada com sucesso.\nClique ", nuNota)) + this.getLinkNota("aqui", newCabVO.asBigDecimal("NUNOTA")) + " para abrir o Pedido de Venda gerado.");	
 		}
 		
 	}

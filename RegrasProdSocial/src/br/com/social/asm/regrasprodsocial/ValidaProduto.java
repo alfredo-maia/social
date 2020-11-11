@@ -1,6 +1,7 @@
 package br.com.social.asm.regrasprodsocial;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import br.com.sankhya.extensions.eventoprogramavel.EventoProgramavelJava;
 import br.com.sankhya.jape.EntityFacade;
@@ -10,6 +11,7 @@ import br.com.sankhya.jape.event.PersistenceEvent;
 import br.com.sankhya.jape.event.TransactionContext;
 import br.com.sankhya.jape.util.FinderWrapper;
 import br.com.sankhya.jape.vo.DynamicVO;
+import br.com.sankhya.jape.vo.EntityVO;
 import br.com.sankhya.modelcore.auth.AuthenticationInfo;
 import br.com.sankhya.modelcore.util.EntityFacadeFactory;
 
@@ -75,6 +77,7 @@ public class ValidaProduto implements EventoProgramavelJava{
 				AuthenticationInfo auth = AuthenticationInfo.getCurrent();
 				
 				try {
+
 					 
 					//Abrindo a sessão
 					hnd = JapeSession.open();
@@ -101,17 +104,53 @@ public class ValidaProduto implements EventoProgramavelJava{
 						
 						boolean permissao = usu.validaPermissao(usu.getCodUsu());
 						
+						/*
+						 * Validando Permissão de Alteração
+						 */
 						if(permissao == false) {
-							throw new Exception();
+							throw new Exception("SEM_PEMISSAO");
 						}
 						
+						
+						/*
+						 * Buscando Tributação de Transferência por NCM
+						 */
+						
+						FinderWrapper finderWrapper = new FinderWrapper("AD_TGSNCMEST", "NCM = " + ncmNew);
+						
+						Collection<DynamicVO> tributos = dwfFacade.findByDynamicFinder(finderWrapper);
+						
+						Iterator it = tributos.iterator();
+						
+						while (it.hasNext()) {
+							/*
+							 * Alterando o cadastro da Aba Impostos por Empresa
+							 */
+							DynamicVO trib = (DynamicVO) it.next();
+							
+							//Buscando Empresa da UF de destino
+							DynamicVO empVo = (DynamicVO) dwfFacade.findEntityByPrimaryKeyAsVO("UnidadeFederativa", trib.asBigDecimal("UFDEST"));
+							
+							//Verificando se existe cadastro
+							DynamicVO proImpEmpVo = (DynamicVO) dwfFacade.findEntityByPrimaryKeyAsVO("EmpresaProdutoImpostos", new Object[] {empVo.asBigDecimal("AD_CODEMP"),prodVoNew});
+
+							if(proImpEmpVo.asInt("CODPROD") > 0 ) {
+								
+							}else {
+								
+							}
+						}
 					}
 					
 				}catch (Exception e) {
 					
-					e.printStackTrace();
+					String msg_err = e.getMessage();
 					
-					throw new Exception("<div align='left'> <font color='#FF0000'> Você não possui acesso para alterar o  <b>NCM</b>. </font>  </div>");
+					if (msg_err.equals("SEM_PEMISSAO")) {
+						
+						throw new Exception("<div align='left'> <font color='#FF0000'> Você não possui acesso para alterar o  <b>NCM</b>. </font>  </div>");
+						
+					}
 
 				}finally {
 					//Finalizando a sessão
