@@ -5,5 +5,6 @@
 	<classpathentry kind="lib" path="C:/sk-java/workspace/social/api_sankhya/jape.jar" sourcepath="/JAPE"/>
 	<classpathentry kind="lib" path="C:/sk-java/workspace/social/api_sankhya/mge-modelcore.jar" sourcepath="/MGE-Modelcore-3.16.0"/>
 	<classpathentry kind="lib" path="C:/sk-java/Api de Servicos de Integracao/SankhyaW-extensions.jar"/>
+	<classpathentry kind="lib" path="C:/sk-java/workspace/social/api_dev/javax.ejb.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import br.com.sankhya.extensions.eventoprogramavel.EventoProgramavelJava;
 import br.com.sankhya.jape.EntityFacade;
+import br.com.sankhya.jape.bmp.PersistentLocalEntity;
 import br.com.sankhya.jape.core.JapeSession;
 import br.com.sankhya.jape.core.JapeSession.SessionHandle;
 import br.com.sankhya.jape.event.PersistenceEvent;
@@ -132,9 +133,18 @@ public class ValidaProduto implements EventoProgramavelJava{
 							DynamicVO empVo = (DynamicVO) dwfFacade.findEntityByPrimaryKeyAsVO("UnidadeFederativa", trib.asBigDecimal("UFDEST"));
 							
 							//Verificando se existe cadastro
-							DynamicVO proImpEmpVo = (DynamicVO) dwfFacade.findEntityByPrimaryKeyAsVO("EmpresaProdutoImpostos", new Object[] {empVo.asBigDecimal("AD_CODEMP"),prodVoNew});
-
-							if(proImpEmpVo.asInt("CODPROD") > 0 ) {
+							PersistentLocalEntity ple = dwfFacade.findEntityByPrimaryKey("EmpresaProdutoImpostos", new Object[] {empVo.asBigDecimal("AD_CODEMP"),prodVoNew});
+							
+							EntityVO prodEmpImpModel = (EntityVO) ple.getValueObject();
+							
+							DynamicVO prodEmpImpVO = (DynamicVO) prodEmpImpModel;
+							
+							if(prodEmpImpVO.asBigDecimal("CODPROD").intValue() > 0 ) {
+								
+								prodEmpImpVO.setProperty("TIPSUBST",trib.asString("TIPSUBST"));
+								prodEmpImpVO.setProperty("ORIGPROD", prodVoNew.asBigDecimal("ORIGPROD"));
+								prodEmpImpVO.setProperty("USOPROD",prodVoNew.asBigDecimal("USOPROD"));
+								
 								
 							}else {
 								
